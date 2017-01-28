@@ -2,7 +2,6 @@ import os
 
 import classes.Constants as Constants
 import definitions
-import custom_definitions
 
 
 class StreamingModule:
@@ -49,9 +48,11 @@ def get_module_name_from_jar_name(jar_name):
 
 
 def get_custom_module_definition(module_name):
-    for custom_definition in custom_definitions.custom_modules:
-        if module_name in get_simple_name_from_module_name(get_module_name_from_jar_name(os.path.basename(custom_definition))):
-            return custom_definition
+    for custom_definition in definitions.custom_modules:
+        name = get_simple_name_from_module_name(get_module_name_from_jar_name(os.path.basename(custom_definition)))
+        if name is not None:
+            if module_name in name:
+                return custom_definition
     return None
 
 

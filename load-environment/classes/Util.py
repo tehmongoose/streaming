@@ -38,6 +38,18 @@ def get_streaming_modules():
         if Constants.CHANNEL_PREFIX in jar_name:
             module = StreamingModule(lib_path, jar_name)
             result_list.append(module)
+
+    # Check to see if the custom module is not in the directory
+    found_match = False
+    for custom_module in definitions.custom_modules:
+        for module in result_list:
+            if module.file_path == custom_module:
+                found_match = True
+                continue
+        if not found_match:
+            new_module = StreamingModule(custom_module, os.path.basename(custom_module))
+            result_list.append(new_module)
+        found_match = False
     return result_list
 
 
