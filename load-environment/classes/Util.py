@@ -4,7 +4,7 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
-from classes.StreamingArtifact import StreamingArtifact
+from classes.StreamingArtifact import StreamingModule
 import classes.Constants as Constants
 import definitions
 
@@ -36,7 +36,8 @@ def get_streaming_modules():
     result_list = []
     for jar_name in os.listdir(lib_path):
         if Constants.CHANNEL_PREFIX in jar_name:
-            result_list.append(StreamingArtifact(lib_path, jar_name))
+            module = StreamingModule(lib_path, jar_name)
+            result_list.append(module)
     return result_list
 
 
@@ -72,9 +73,7 @@ def get_stream_definitions(modules):
     real_stream_definitions = []
     for stream_def in definitions.stream_definition:
         for module in modules:
-            for simple_name in definitions.module_names:
-                if simple_name in module.name:
-                    stream_def = stream_def.replace(simple_name, module.name)
+            stream_def = stream_def.replace(module.simple_name, module.name)
         real_stream_definitions.append(stream_def)
     return real_stream_definitions
 
